@@ -25,7 +25,21 @@ keypadButtons.forEach(button => {
             display.value = '';
         } else if (buttonValue === '=') {
             try {
-                display.value = eval(display.value);
+                const expression = display.value.replace(/(\d+\.?\d*)([\+\-\*/])(\d+\.?\d*)/g, (match, p1, p2, p3) => {
+                    const num1 = parseFloat(p1);
+                    const num2 = parseFloat(p3);
+                    switch (p2) {
+                        case '+':
+                            return add(num1, num2);
+                        case '-':
+                            return subtract(num1, num2);
+                        case '*':
+                            return multiply(num1, num2);
+                        case '/':
+                            return divide(num1, num2);
+                    }
+                });
+                display.value = expression;
             } catch (error) {
                 display.value = 'Error';
             }
